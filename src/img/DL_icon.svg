@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+<line id="part1" x1="10" x2="10" y2="13.37"/>
+<polygon id="part2" points="3.84 8.37 4.94 7.34 10 12.79 15.06 7.34 16.16 8.37 10 15 3.84 8.37"/>
+<polyline id="part3" points="19.25 11.74 19.25 19.25 0.75 19.25 0.75 11.74"/>
+</svg>

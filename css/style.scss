@@ -1,0 +1,901 @@
+//PC最小幅とSP最大幅を変数に入れる
+$media_pc: 920px;
+$media_sp: 480px;
+$color_bg: #fcf0ed;
+$color_kuro: #14171a;
+$color_aka: #b90a0f; //#b90a0f
+$color_mizu: #0dabb7;
+$color_chairo: #a09669;
+$color_murasaki: #3b357a;
+
+@mixin pc {
+  @media screen and (min-width: $media_pc) {
+    @content;
+  }
+}
+@mixin sp {
+  @media screen and (max-width: $media_sp) {
+    @content;
+  }
+}
+@mixin posi_relative() {
+  position: relative;
+  margin: 0;
+  padding: 0;
+}
+@mixin posi_absolute {
+  position: absolute;
+  margin: 0;
+  top: 0;
+  left: 0;
+}
+
+//空白のサイズ
+.xs_space {
+  @include posi_relative();
+  z-index: -1;
+  height: 3vw;
+  @include pc {
+    height: 1.3vw;
+  }
+  @include sp {
+    height: 1.5vw;
+  }
+}
+.s_space {
+  @include posi_relative();
+  z-index: -1;
+  height: 5vw;
+  @include pc {
+    height: 3vw;
+  }
+  @include sp {
+    height: 8vw;
+  }
+}
+.m_space {
+  @include posi_relative();
+  z-index: -1;
+  height: 8vw;
+  @include pc {
+    height: 5vw;
+  }
+}
+.l_space {
+  @include posi_relative();
+  z-index: -1;
+  height: 20vw;
+  @include pc {
+    height: 8vw;
+  }
+  @include sp {
+    height: 8vw;
+  }
+}
+
+html {
+  scroll-behavior: smooth;
+}
+body {
+  user-select: none;
+  margin: 0;
+  padding: 0;
+  color: $color_kuro;
+  font: 1.1em serif;
+  background-color: $color_bg;
+}
+
+.text_progress {
+  font-size: 1.3em;
+}
+
+.btn {
+  @include posi_relative();
+  padding: 0.7rem 1.5rem;
+  @include sp {
+    padding: 0.3rem 1.5rem;
+  }
+  text-align: center;
+  line-height: 60px;
+  cursor: pointer;
+  color: $color_bg;
+  background: $color_aka;
+  border-radius: 0.5rem;
+  transform: scale(1);
+  transition: 0.2s;
+  &:hover {
+    background: rgb(172, 65, 65);
+    transform: scale(0.98);
+    transition: 0.2s;
+  }
+}
+.posi_rtv {
+  @include posi_relative();
+}
+.container_body_place {
+  @include posi_relative();
+  margin: 0 17vw 0 4vw;
+  @include pc {
+    margin: 0 17vw 0 12vw;
+  }
+  @include sp {
+    margin: 0 2vw;
+  }
+}
+.progress {
+  position: fixed;
+  z-index: 70;
+  width: 14vw;
+  height: 100vh;
+  background-color: $color_chairo;
+  right: 0;
+  @include pc {
+    width: 12vw;
+  }
+  @include sp {
+    display: none;
+  }
+  #progress_log {
+    position: absolute;
+    right: 2vw;
+    bottom: 45vw;
+    color: $color_kuro;
+    writing-mode: vertical-rl;
+    text-orientation: upright;
+    @include pc {
+      bottom: 15vw;
+    }
+    @include sp {
+      display: none;
+    }
+  }
+  #progress_img {
+    position: absolute;
+    right: -3vw;
+    bottom: 20vw;
+    visibility: hidden;
+    @include pc {
+      right: 5%;
+      bottom: 20px;
+    }
+    @include sp {
+      display: none;
+    }
+  }
+}
+#section_camera {
+  .camera_area {
+    height: 100vh;
+  }
+  #count {
+    @include posi_absolute();
+    top: 20%;
+    left: 3vw;
+    z-index: 50;
+    @include sp {
+      top: 19%;
+      left: 5vw;
+    }
+    @include pc {
+      top: 38%;
+      left: 3vw;
+    }
+    font-family: serif;
+    #count_log_ver {
+      @include posi_relative();
+      color: $color_murasaki;
+    }
+    h1 {
+      @include posi_relative();
+      font-size: 2.5em;
+      color: $color_aka;
+    }
+  }
+
+  #third_posi {
+    margin: 0 17vw 0 4vw;
+    @include pc {
+      margin: 0 17vw 0 10vw;
+    }
+    @include sp {
+      margin: 0 2vw;
+    }
+  }
+  .conteiner_video {
+    @include posi_relative();
+    width: 400px;
+    height: 100%;
+    margin: 0 auto;
+    @include sp {
+      width: 100%;
+    }
+    @include pc {
+      width: 500px;
+      margin: 0; //左寄せ
+    }
+    video {
+      @include posi_relative();
+      transform: scaleX(-1);
+      width: 100%;
+      height: 100% * 9 / 16;
+      @include pc {
+        clip-path: inset(0px 62.5px 0px 62.5px); //(500-375)/2
+      }
+    }
+    #overlay_canvas,
+    #canvasStamp_color,
+    #canvasStamp,
+    #canvasHige {
+      @include posi_absolute();
+      transform: scaleX(-1);
+      width: 100%;
+      height: auto;
+      @include pc {
+        clip-path: inset(0px 62.5px 0px 62.5px);
+      }
+    }
+
+    #start_triger {
+      @include posi_absolute();
+      z-index: 60;
+      width: 100%;
+      height: auto;
+      @include pc {
+        left: 62.5px;
+        width: 375px;
+        cursor: pointer;
+        transition: 0.3s;
+        transform: scale(1);
+        &:hover {
+          transition: 0.3s;
+          transform: scale(1.05);
+        }
+      }
+    }
+
+    .container_btn {
+      @include posi_relative();
+      margin: 0 auto;
+      width: 400px;
+      @include pc {
+        width: 375px;
+      }
+      @include sp {
+        width: 100%;
+      }
+      .btnBA {
+        @include posi_relative();
+        width: 100%;
+        margin: 0 auto;
+      }
+      #btnB {
+        @include posi_relative();
+        z-index: 10;
+        display: none;
+      }
+    }
+    #yohaku0 {
+      @include posi_relative();
+      z-index: -1;
+      height: 3vw;
+      @include pc {
+        height: 0;
+      }
+      @include sp {
+        height: 1.5vw;
+      }
+    }
+    #btnA {
+      @include posi_relative();
+      z-index: 10;
+      display: none;
+      color: $color_kuro;
+      background: $color_mizu;
+      &:hover {
+        background: #4fbfc7;
+      }
+    }
+  }
+
+  .container_katsura_btn {
+    @include posi_relative();
+    @include pc {
+      @include posi_absolute();
+      left: 58%;
+    }
+    ul {
+      overflow-x: auto;
+      white-space: normal;
+      padding: 0;
+      margin: 0;
+      @include sp {
+        white-space: nowrap;
+      }
+      li {
+        margin: 0;
+        display: inline-block;
+        .stamp_btn {
+          display: none;
+          margin: 0 3px;
+          width: 6rem;
+          cursor: pointer;
+          transition: 0.1s;
+          @include pc {
+            width: 6.5rem;
+          }
+          @include sp {
+            width: 5.5rem;
+          }
+        }
+      }
+    }
+  }
+}
+
+#section_cfm {
+  #container_canvas_cfm {
+    @include posi_relative();
+    width: 100%;
+    height: 50vh;
+    .canvas_cfm {
+      @include posi_absolute();
+      transform: scaleX(-1);
+      width: 42vw;
+      @include sp {
+        width: 48vw;
+      }
+      @include pc {
+        width: 400px;
+        clip-path: inset(0px 50px 0px 50px);
+      }
+    }
+    #container_canvasBefore {
+      @include posi_absolute();
+    }
+    #container_canvasAfter {
+      @include posi_absolute();
+      left: 50%;
+    }
+  }
+}
+
+.obj_hidden {
+  visibility: hidden;
+}
+
+#processing_space {
+  background-color: $color_murasaki;
+  height: 100%;
+  @include pc {
+    height: 100vh;
+  }
+  p {
+    color: $color_bg;
+  }
+  #container_processing {
+    @include posi_relative();
+    font-family: sans-serif;
+    #container_outputCanvas {
+      @include posi_relative();
+      width: 100%;
+      display: flex;
+      justify-content: center; //左右？
+      @include pc {
+        display: block;
+      }
+      #canvas_relative {
+        @include posi_relative();
+        width: 375px;
+        height: 375px;
+      }
+      #canvas_light {
+        @include posi_relative();
+        @include sp {
+          width: 100%;
+        }
+      }
+      #canvas_bg,
+      #canvas_line,
+      #canvas_dark,
+      #canvas_cheek,
+      #dl_canvas {
+        @include posi_absolute();
+        @include sp {
+          width: 100%;
+        }
+      }
+      img {
+        @include posi_absolute();
+        width: 1%;
+      }
+    }
+    #container_opencvBtns {
+      @include posi_relative();
+      width: 85%;
+      height: auto;
+      margin: 0 auto;
+
+      @include pc {
+        @include posi_absolute();
+        left: 45%;
+        width: 60%;
+      }
+      @include sp {
+        width: 100%;
+        height: 30vh;
+        overflow: auto;
+        background-color: #5f5b8b; //#1e1b41
+        border-radius: 6px;
+      }
+      .parameter {
+        @include posi_relative();
+        margin: 12px;
+        @include sp {
+          margin: 7px 4px;
+        }
+        display: flex;
+        align-items: center;
+        p {
+          margin: 0;
+        }
+        .param_name {
+          width: 20%;
+          margin: 0;
+          display: flex;
+          justify-content: center;
+          text-align: center;
+          .param_toggle {
+            @include posi_relative();
+            margin-top: 5px;
+            display: flex;
+            align-items: center;
+            #toggle_cheek,
+            #toggle_hige {
+              display: none;
+            }
+            .toggle_label {
+              position: relative;
+              left: 2%;
+              width: 56px;
+              height: 26px;
+              background-color: #ccc;
+              border-radius: 20px;
+              transition: 0.4s;
+              cursor: pointer;
+              &:after {
+                // ○ のスタイル
+                content: "";
+                @include posi_absolute();
+                width: 26px;
+                height: 26px;
+                border-radius: 100%;
+                z-index: 2;
+                background: $color_bg;
+                box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+                transition: 0.4s;
+              }
+            }
+            #toggle_cheek:checked,
+            #toggle_hige:checked {
+              + .toggle_label {
+                background-color: $color_mizu;
+                &:after {
+                  left: 30px;
+                }
+              }
+            }
+          }
+        }
+        .param_obj {
+          @include posi_relative();
+          left: 5%;
+          @include sp {
+            left: 2%;
+          }
+          .bar {
+            width: 40vw;
+            @include pc {
+              width: 25vw;
+            }
+            @include sp {
+              width: 65vw;
+            }
+            background-color: $color_bg;
+            border-radius: 6px;
+            padding: 5px 8px;
+            .bar_label {
+              display: inline;
+            }
+            input[type="range"] {
+              appearance: none;
+              cursor: pointer; /* カーソルを分かりやすく */
+              outline: none; /* スライダーのアウトラインは見た目がキツイので消す */
+              height: 10px; /* 高さ */
+              width: 80%; /* 幅 */
+              @include pc {
+                width: 20vw;
+              }
+              @include sp {
+                width: 70%;
+              }
+              background: $color_mizu; /* バーの背景色 */
+              border-radius: 10px; /* バーの両端の丸み */
+              margin: 10px 0;
+            }
+            #color_light {
+              margin: 5px 0;
+            }
+          }
+          .icons {
+            @include posi_relative();
+            width: 100%;
+            @include pc {
+              width: 28vw;
+            }
+            @include sp {
+              width: 74vw;
+            }
+            display: flex;
+            align-items: center;
+            ul {
+              overflow-x: visible; //横スクロールしない
+              white-space: nowrap;
+              @include pc {
+                overflow-x: auto; //横スクロール
+              }
+              @include sp {
+                overflow-x: auto; //横スクロール
+              }
+              padding: 0;
+              margin: 0;
+              li {
+                display: inline-block;
+                margin: 0 2px;
+                img {
+                  margin: 0;
+                  width: 100%;
+                  cursor: pointer;
+                  transition: 0.1s;
+                  //枠
+                  padding: 2px;
+                  background-color: $color_chairo;
+                }
+              }
+            }
+          }
+        }
+      }
+      .iconsArea {
+        height: 72px;
+        margin: 2px 12px; //上書き
+        @include sp {
+          margin: 7px 4px;
+        }
+      }
+    }
+  }
+  #container_btn_dl {
+    width: 375px;
+    margin: 0 auto;
+    @include pc {
+      margin: 0 50% 0 0;
+    }
+    @include sp {
+      width: 90%;
+    }
+    #btn_dl {
+      transition: 0.3s;
+      &:hover {
+        transition: 0.5s;
+      }
+    }
+  }
+}
+#yohaku1 {
+  @include posi_relative();
+  z-index: -1;
+  height: 4vw;
+  @include pc {
+    height: 0;
+  }
+  @include sp {
+    height: 3vw;
+  }
+}
+#yohaku2 {
+  @include posi_relative();
+  z-index: -1;
+  height: 3vw;
+  @include sp {
+    height: 8vw;
+  }
+}
+#yohaku3 {
+  @include posi_relative();
+  z-index: -1;
+  height: 6vw;
+}
+
+/********************
+  omakeとhistory共通
+*********************/
+.area {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: $color_bg;
+  text-align: center;
+  @include sp {
+    text-align: left;
+    padding: 0 10px;
+  }
+}
+.area_left {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: $color_bg;
+  h2 {
+    text-align: center;
+  }
+}
+.area_0 {
+  height: 80vh;
+  background-color: $color_bg;
+}
+.area_aka {
+  height: 100vh;
+  background-color: $color_aka;
+}
+.area_murasaki {
+  height: 100vh;
+  background-color: $color_murasaki;
+}
+.area_mizu {
+  height: 100vh;
+  background-color: $color_mizu;
+}
+.inner {
+  width: 70%;
+}
+.br_pc {
+  display: none;
+  @include pc {
+    display: block;
+  }
+}
+/********************
+  history
+*********************/
+.area_history {
+  background-color: $color_chairo;
+  p {
+    font-family: serif;
+  }
+}
+.frame {
+  @include posi_relative();
+  padding: 1vw;
+  background-color: $color_bg;
+  box-shadow: 0 3px 10px -4px rgba(0, 0, 0, 0.8);
+}
+.side_margin {
+  @include posi_relative();
+  margin: 0 3vw;
+  @include pc {
+    margin: 0 3vw;
+  }
+  @include sp {
+    margin: 0 2vw;
+  }
+}
+.imgs_edo {
+  @include posi_relative();
+  height: 80vh;
+  img {
+    @include posi_absolute();
+    &:nth-child(1) {
+      width: 30vw;
+      top: 0;
+      left: 10%;
+    }
+    &:nth-child(2) {
+      width: 30vw;
+      top: 50%;
+      left: 10%;
+    }
+    &:nth-child(3) {
+      width: 30vw;
+      top: 0;
+      left: 50%;
+    }
+  }
+}
+.container_left {
+  @include posi_relative();
+  @include pc {
+    margin: 0 30vw 0 5vw;
+  }
+}
+.container_img4 {
+  margin: 5vw;
+  @include pc {
+    margin: 0;
+  }
+  img {
+    width: 100%;
+    height: auto;
+    @include pc {
+      width: 80%;
+    }
+  }
+}
+.container_right {
+  @include pc {
+    margin: 0 5vw 0 30vw;
+  }
+}
+
+/********************
+        header
+*********************/
+.header {
+  z-index: 100;
+  position: fixed;
+  transition: all 0.5s;
+  nav {
+    @include posi_relative();
+    width: 100vw;
+    height: 70px;
+    .drawer {
+      @include posi_relative();
+      width: 100vw;
+      height: 70px;
+      display: flex;
+      align-items: center;
+      .hamburger {
+        z-index: 100;
+        position: absolute;
+        right: 1vw;
+        @include sp {
+          right: 2vw;
+        }
+        width: 50px;
+        height: 50px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        border-radius: 50%;
+        background-color: $color_aka;
+        box-shadow: 2px 2px 0px 0 rgba(0, 0, 0, 0.2);
+        span {
+          position: absolute;
+          // display: block;
+          width: 24px;
+          border-radius: 3px;
+          border-bottom: solid 2.4px $color_bg;
+          transition: 0.35s ease-in-out;
+          &:nth-child(1) {
+            top: 14px;
+          }
+          &:nth-child(2) {
+            top: 23px;
+          }
+          &:nth-child(3) {
+            top: 33px;
+          }
+        }
+        &.active span {
+          border-bottom: solid 2.4px $color_mizu;
+          &:nth-child(1) {
+            top: 25px;
+            transform: rotate(-45deg);
+          }
+          &:nth-child(2) {
+            opacity: 0;
+          }
+          &:nth-child(3) {
+            top: 24px;
+            transform: rotate(45deg);
+          }
+        }
+      }
+    }
+    //ナビゲーション部分
+    .menu {
+      height: 105vh;
+      display: flex;
+      align-items: center;
+      text-align: center;
+      background: $color_mizu;
+      transition: 0.5s ease-out;
+      transform: translateY(-150%);
+      &.open {
+        transform: translateY(-10%);
+      }
+      ul {
+        padding: 0;
+        margin: 0 auto;
+        li {
+          display: block;
+          padding: 2em;
+          @include sp {
+            padding: 1.5em;
+          }
+          font-size: 30px;
+          font-weight: bold;
+          font-family: serif;
+          a {
+            color: $color_aka;
+            text-decoration: none;
+            transition: 0.3s;
+            &:hover {
+              color: $color_murasaki;
+              transition: 0.3s;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+.overflow-hidden {
+  overflow: hidden;
+}
+
+/********************
+  アニメーションまとめ
+*********************/
+//スタートトリガー
+.animation-target {
+  animation: animation 3s linear infinite;
+}
+@keyframes animation {
+  0% {
+    transform: rotate(0deg);
+  }
+  50% {
+    transform: rotate(8deg);
+  }
+  55% {
+    transform: rotate(-6deg);
+  }
+  64% {
+    transform: rotate(3deg);
+  }
+  72% {
+    transform: rotate(-1deg);
+  }
+  80% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(0deg);
+  }
+}
+
+//ナビくん
+.animation-target1 {
+  animation: anime_navi 2s linear infinite;
+}
+@keyframes anime_navi {
+  0% {
+    transform: rotate(5deg);
+  }
+  42% {
+    transform: rotate(-12deg);
+  }
+  50% {
+    transform: rotate(-5deg);
+  }
+  58% {
+    transform: rotate(-12deg);
+  }
+  68% {
+    transform: rotate(-5deg);
+  }
+  100% {
+    transform: rotate(5deg);
+  }
+}

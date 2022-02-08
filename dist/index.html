@@ -1,0 +1,263 @@
+<!DOCTYPE HTML>
+<html lang="ja">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#b90a0f">
+  <title>醜容術カメラ</title>
+  <link rel="icon" href="../src/img/favicon.ico">
+  <link rel="apple-touch-icon" href="../src/img/favicon.png" type="image/png">
+  <link rel="stylesheet" href="../css/style.css">
+
+  <script async src="../library/clmtrackr.js"></script>
+  <script async src="../library/model_pca_20_svm_emotion.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.9.0/gsap.min.js"></script>
+  <script defer src="https://code.createjs.com/1.0.0/createjs.min.js"></script>
+  <script async src="https://docs.opencv.org/3.4.1/opencv.js" type="text/javascript"></script>
+  <script defer src="./main.js"></script>
+</head>
+
+<body>
+  <header>
+    <div class="header">
+      <nav>
+        <div class="drawer">
+          <div class="hamburger">
+            <span></span><span></span><span></span>
+          </div>
+        </div>
+        <div class="menu">
+          <ul>
+            <li><span><a href="./index.html">醜容術カメラ</a></span></li>
+            <li><span><a href="./history.html">変顔の歴史</a></span></li>
+            <li><span><a href="./omake.html">メッセージ</a></span></li>
+          </ul>
+        </div>
+      </nav>
+    </div>
+  </header>
+  <div class="progress">
+    <h4 id="progress_log"></h4>
+    <img id="progress_img" class="animation-target1" src="../src/img/nabikun.png" width="150" height="auto">
+  </div>
+  <section id="section_camera">
+    <div class="posi_rtv camera_area">
+      <div id="count">
+        <p id="count_log_ver"></p>
+        <h1 id="count_log"></h1>
+      </div>
+      <div class="container_body_place">
+        <div class="m_space"></div>
+        <p class="text_progress" id="log">【一】まずは真顔で撮影しよう。</p>
+        <div class="xs_space"></div>
+        <div class="posi_rtv">
+          <div class="conteiner_video">
+            <canvas id="canvasStamp"></canvas>
+            <canvas id="canvasHige"></canvas>
+            <video id="video" autoplay playsinline></video>
+            <canvas id="overlay_canvas"></canvas>
+            <canvas id="canvasStamp_color"></canvas>
+            <img class="animation-target" id="start_triger" src="../src/img/clickAndStart.png">
+          </div>
+          <div class="conteiner_video">
+            <div class="container_btn">
+              <div class="btn btnBA" id="btnB">真顔で撮影</div>
+            </div>
+          </div>
+          <div class="container_katsura_btn">
+            <ul>
+              <li><img class="stamp_btn" src="../src/img/img_btn/btn_katura1.png" id="btn_k1"></li>
+              <li><img class="stamp_btn" src="../src/img/img_btn/btn_katura2.png" id="btn_k2"></li>
+              <li><img class="stamp_btn" src="../src/img/img_btn/btn_katura3.png" id="btn_k3"></li>
+              <li><img class="stamp_btn" src="../src/img/img_btn/btn_katura4.png" id="btn_k4"></li>
+              <li><img class="stamp_btn" src="../src/img/img_btn/btn_katura5.png" id="btn_k5"></li>
+              <li><img class="stamp_btn" src="../src/img/img_btn/btn_katura6.png" id="btn_k6"></li>
+              <li><img class="stamp_btn" src="../src/img/img_btn/btn_katura7.png" id="btn_k7"></li>
+              <li><img class="stamp_btn" src="../src/img/img_btn/btn_katura8.png" id="btn_k8"></li>
+              <li><img class="stamp_btn" src="../src/img/img_btn/btn_katura9.png" id="btn_k9"></li>
+              <li><img class="stamp_btn" src="../src/img/img_btn/btn_katura10.png" id="btn_k10"></li>
+              <li><img class="stamp_btn" src="../src/img/img_btn/btn_katura11.png" id="btn_k11"></li>
+              <li><img class="stamp_btn" src="../src/img/img_btn/btn_katura12.png" id="btn_k12"></li>
+            </ul>
+          </div>
+          <div class="conteiner_video">
+            <div id="yohaku0"></div>
+            <div class="container_btn">
+              <div class="btn btnBA" id="btnA">変顔で撮影</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section id="section_cfm">
+    <div class="container_body_place">
+      <p class="text_progress">【五】確認用。</p>
+      <div class="m_space"></div>
+      <div id="container_canvas_cfm">
+        <div id="container_canvasBefore">
+          <canvas class="canvas_cfm" id="canvasB"></canvas>
+          <canvas class="canvas_cfm" id="wireframe_canvasB"></canvas>
+        </div>
+        <div id="container_canvasAfter">
+          <canvas class="canvas_cfm" id="canvasA"></canvas>
+          <canvas class="canvas_cfm obj_hidden" id="dataOnly_canvas500"></canvas>
+          <canvas class="canvas_cfm obj_hidden" id="dataOnly_canvas375" width="375" height="375"></canvas>
+        </div>
+      </div>
+    </div>
+  </section>
+  <div id="processing_space">
+    <section class="section_processing">
+      <div class="container_body_place">
+        <div class="xs_space"></div>
+        <p class="text_progress">【六】お好みに編集してみよう。</p>
+        <div id="container_processing">
+          <div id="container_outputCanvas">
+            <div id="canvas_relative">
+              <canvas id="canvas_light"></canvas>
+              <canvas id="canvas_dark"></canvas>
+              <canvas id="canvas_cheek"></canvas>
+              <img src="../src/img/img_material/bg1.jpg" class="obj_hidden" id="bg1">
+              <img src="../src/img/img_material/bg2.jpg" class="obj_hidden" id="bg2">
+              <img src="../src/img/img_material/bg3.jpg" class="obj_hidden" id="bg3">
+              <img src="../src/img/img_material/bg4.jpg" class="obj_hidden" id="bg4">
+              <img src="../src/img/img_material/bg5.jpg" class="obj_hidden" id="bg5">
+              <img src="../src/img/img_material/bg6.jpg" class="obj_hidden" id="bg6">
+              <img src="../src/img/img_higeStamp/hige1.png" class="obj_hidden" id="h1">
+              <img src="../src/img/img_higeStamp/hige2.png" class="obj_hidden" id="h2">
+              <img src="../src/img/img_higeStamp/hige3.png" class="obj_hidden" id="h3">
+              <img src="../src/img/img_higeStamp/hige4.png" class="obj_hidden" id="h4">
+              <img src="../src/img/img_higeStamp/hige5.png" class="obj_hidden" id="h5">
+              <img src="../src/img/img_higeStamp/hige6.png" class="obj_hidden" id="h6">
+              <canvas id="canvas_bg"></canvas>
+              <canvas id="canvas_line"></canvas>
+              <canvas class="obj_hidden" id="dl_canvas" width="375" height="375"></canvas>
+            </div>
+          </div>
+          <div id="yohaku1"></div>
+          <div id="container_opencvBtns">
+            <div class="parameter">
+              <p class="param_name">線</p>
+              <div class="param_obj">
+                <div class="bar">
+                  <div class="bar_label">細</div>
+                  <input type="range" id="bar_lineThick" name="bar_lineThick" value="1" min="1" max="3" step="1">
+                  <div class="bar_label">太</div>
+                  <br>
+                  <div class="bar_label">長</div>
+                  <input type="range" id="bar_lineThreshold" name="bar_lineThreshold" value="80" min="1" max="160"
+                    step="1">
+                  <div class="bar_label">短</div>
+                </div>
+              </div>
+            </div>
+            <div class="parameter">
+              <p class="param_name">濃い色の影</p>
+              <div class="param_obj">
+                <div class="bar">
+                  <div class="bar_label">狭</div>
+                  <input type="range" id="bar_dark" name="bar_dark" value="60" min="0" max="120" step="1">
+                  <div class="bar_label">広</div>
+                </div>
+              </div>
+            </div>
+            <div class="parameter">
+              <p class="param_name">薄い色の影</p>
+              <div class="param_obj">
+                <div class="bar">
+                  <div class="bar_label">狭</div>
+                  <input type="range" id="bar_light" name="bar_light" value="100" min="0" max="200" step="1">
+                  <div class="bar_label">広</div>
+                  <br>
+                  <label for="color_light">色</label>
+                  <input type="color" id="color_light" name="color_light" value="#fae6dc">
+                </div>
+              </div>
+            </div>
+            <div class="parameter iconsArea">
+              <div class="param_name">
+                <div>
+                  <p>ほっぺ</p>
+                  <div class="param_toggle">
+                    <input id="toggle_cheek" type="checkbox" />
+                    <label for="toggle_cheek" class="toggle_label"></label>
+                  </div>
+                </div>
+              </div>
+              <div class="param_obj">
+                <div class="icons" id="icons_cheekColor">
+                  <ul>
+                    <li><img src="../src/img/icon_cheekColor/iconCheek1.png" id="btn_c1"></li>
+                    <li><img src="../src/img/icon_cheekColor/iconCheek2.png" id="btn_c2"></li>
+                    <li><img src="../src/img/icon_cheekColor/iconCheek3.png" id="btn_c3"></li>
+                    <li><img src="../src/img/icon_cheekColor/iconCheek4.png" id="btn_c4"></li>
+                    <li><img src="../src/img/icon_cheekColor/iconCheek5.png" id="btn_c5"></li>
+                    <li><img src="../src/img/icon_cheekColor/iconCheek6.png" id="btn_c6"></li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+            <div class="parameter iconsArea">
+              <div class="param_name">
+                <div>
+                  <p>ひげ</p>
+                  <div class="param_toggle">
+                    <input id="toggle_hige" type="checkbox" />
+                    <label for="toggle_hige" class="toggle_label"></label>
+                  </div>
+                </div>
+              </div>
+              <div class="param_obj">
+                <div class="icons" id="icons_hige">
+                  <ul>
+                    <li><img src="../src/img/icon_hige/iconHige1.png" id="btn_h1"></li>
+                    <li><img src="../src/img/icon_hige/iconHige2.png" id="btn_h2"></li>
+                    <li><img src="../src/img/icon_hige/iconHige3.png" id="btn_h3"></li>
+                    <li><img src="../src/img/icon_hige/iconHige4.png" id="btn_h4"></li>
+                    <li><img src="../src/img/icon_hige/iconHige5.png" id="btn_h5"></li>
+                    <li><img src="../src/img/icon_hige/iconHige6.png" id="btn_h6"></li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+            <div class="parameter iconsArea">
+              <p class="param_name">背景の和紙</p>
+              <div class="param_obj">
+                <div class="icons" id="icons_bg">
+                  <ul>
+                    <li><img src="../src/img/icon_bg/iconBg1.png" id="btn_bg1"></li>
+                    <li><img src="../src/img/icon_bg/iconBg2.png" id="btn_bg2"></li>
+                    <li><img src="../src/img/icon_bg/iconBg3.png" id="btn_bg3"></li>
+                    <li><img src="../src/img/icon_bg/iconBg4.png" id="btn_bg4"></li>
+                    <li><img src="../src/img/icon_bg/iconBg5.png" id="btn_bg5"></li>
+                    <li><img src="../src/img/icon_bg/iconBg6.png" id="btn_bg6"></li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div id="yohaku2"></div>
+          <div id="container_btn_dl">
+            <div class="btn" id="btn_dl">
+              <svg width="20px" height="20px">
+                <use href="../src/img/DL_icon.svg#part1" x="0" y="0" fill="#f8f1d9" stroke="#f8f1d9"
+                  stroke-width="1.3" />
+                <use href="../src/img/DL_icon.svg#part2" x="0" y="0" fill="#f8f1d9" />
+                <use href="../src/img/DL_icon.svg#part3" x="0" y="0" fill="none" stroke="#f8f1d9" stroke-width="1.3" />
+              </svg>
+              ダウンロードする
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <div id="yohaku3"></div>
+
+  </div>
+
+
+</body>
+
+</html>
