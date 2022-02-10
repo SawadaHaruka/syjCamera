@@ -422,6 +422,11 @@ class pageMain {
           createjs.Ticker.removeEventListener('tick', drawLoop); //Tickerイベントを削除しておく
           createjs.Ticker.removeEventListener('tick', stage_katsura); //Tickerイベントを削除しておく
           video.pause();
+
+          stamp_btn.forEach((value) => {
+            value.style.display = "none";
+          });
+          
           tracking_state = "end";
           log.innerHTML = "【四】撮影完了！";
           progress_log.innerHTML = "撮影完了！" + "<br>いい感じに編集をしてアイコンを作ろう";

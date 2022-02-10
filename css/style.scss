@@ -629,14 +629,8 @@ body {
     text-align: left;
     padding: 0 10px;
   }
-}
-.area_left {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  color: $color_bg;
-  h2 {
-    text-align: center;
+  h4 {
+    text-align: left;
   }
 }
 .area_0 {
@@ -657,6 +651,9 @@ body {
 }
 .inner {
   width: 70%;
+  @include sp{
+    width: 100%;
+  }
 }
 .br_pc {
   display: none;
@@ -731,8 +728,9 @@ body {
   }
 }
 .container_right {
+  margin: 0 7vw;
   @include pc {
-    margin: 0 5vw 0 30vw;
+    margin: 0 5vw 0 42vw;
   }
 }
 

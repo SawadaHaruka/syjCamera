@@ -829,15 +829,8 @@ body {
     padding: 0 10px;
   }
 }
-
-.area_left {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  color: #fcf0ed;
-}
-.area_left h2 {
-  text-align: center;
+.area h4 {
+  text-align: left;
 }
 
 .area_0 {
@@ -862,6 +855,11 @@ body {
 
 .inner {
   width: 70%;
+}
+@media screen and (max-width: 480px) {
+  .inner {
+    width: 100%;
+  }
 }
 
 .br_pc {
@@ -966,9 +964,12 @@ body {
   }
 }
 
+.container_right {
+  margin: 0 7vw;
+}
 @media screen and (min-width: 920px) {
   .container_right {
-    margin: 0 5vw 0 30vw;
+    margin: 0 5vw 0 42vw;
   }
 }
 
