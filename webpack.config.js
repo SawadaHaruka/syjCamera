@@ -9,9 +9,9 @@ module.exports = {
   },
 
   // 開発用(わかりやすい)
-  // mode: "development",
+  mode: "development",
   //本番用(軽い)
-  mode: "production",
+  // mode: "production",
   //[npm run build]
   //[npm run watch]こっち
 
