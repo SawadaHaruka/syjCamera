@@ -651,13 +651,13 @@ body {
 .area_mizu {
   height: 100vh;
   background-color: $color_mizu;
-  @include sp{
+  @include sp {
     height: 100%;
   }
 }
 .inner {
   width: 70%;
-  @include sp{
+  @include sp {
     width: 100%;
   }
 }
@@ -667,10 +667,15 @@ body {
     display: block;
   }
 }
-.br_tb{
+.br_tb {
   display: block;
-  @include pc {
+  @include sp {
     display: none;
+  }
+}
+.font_small {
+  @include sp {
+    font-size: small;
   }
 }
 /********************
@@ -681,12 +686,6 @@ body {
   p {
     font-family: serif;
   }
-}
-.frame {
-  @include posi_relative();
-  padding: 1vw;
-  background-color: $color_bg;
-  box-shadow: 0 3px 10px -4px rgba(0, 0, 0, 0.8);
 }
 .side_margin {
   @include posi_relative();
@@ -703,6 +702,7 @@ body {
   display: flex;
   flex-direction: column;
   .flex_container {
+    margin-bottom: 100px;
     display: flex;
     align-items: center;
     flex-direction: row;
@@ -728,6 +728,9 @@ body {
       .img_source {
         font-size: medium;
         margin: 0;
+        @include sp {
+          font-size: x-small;
+        }
       }
     }
     .txt_box {
@@ -777,6 +780,13 @@ body {
       left: 30vw;
     }
   }
+}
+
+.frame {
+  @include posi_relative();
+  padding: 1vw;
+  background-color: $color_bg;
+  box-shadow: 0 3px 10px -4px rgba(0, 0, 0, 0.8);
 }
 
 /********************
