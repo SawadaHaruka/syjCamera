@@ -191,7 +191,7 @@ body {
 }
 
 #section_camera .camera_area {
-  height: 100vh;
+  height: 80vh;
 }
 #section_camera #count {
   position: absolute;
@@ -341,13 +341,6 @@ body {
   width: 100%;
   margin: 0 auto;
 }
-#section_camera .conteiner_video .container_btn #btnB {
-  position: relative;
-  margin: 0;
-  padding: 0;
-  z-index: 10;
-  display: none;
-}
 #section_camera .conteiner_video #yohaku0 {
   position: relative;
   margin: 0;
@@ -364,6 +357,14 @@ body {
   #section_camera .conteiner_video #yohaku0 {
     height: 1.5vw;
   }
+}
+#section_camera .conteiner_video #btnB,
+#section_camera .conteiner_video #btnS {
+  position: relative;
+  margin: 0;
+  padding: 0;
+  z-index: 10;
+  display: none;
 }
 #section_camera .conteiner_video #btnA {
   position: relative;

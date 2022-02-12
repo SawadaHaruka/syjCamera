@@ -181,14 +181,7 @@ class pageMain {
         }
         stamp_color_context.putImageData(imageData, 0, 0);//canvasに変更済みのImageDataオブジェクトを描画する
       }
-      arrBtn_katsura.forEach((value) => {//どれかカツラボタンをクリックしたら
-        value.addEventListener("click", () => {
-          tracking_state = "autoShutter";
-          log.innerHTML = "【三】変顔を5秒以上しよう。";
-          count_log_ver.innerHTML = "自力で撮影バージョン";
-          count_log.innerHTML = "撮影まで<br>";
-        });
-      });
+
       /**
       * 真顔ー変顔：鼻根と各点の距離間を真顔では1とし、変顔では絶対値に直してxとする。
       * 顔をクシャッと縮めて距離（比率）がマイナスなった場合(1-x)+1=2-xに直す
@@ -250,6 +243,8 @@ class pageMain {
           arrBefore = []; //配列クリア
           arrBefore = [eb16, eb20, eb18, eb22, e29, e24, e31, e26, bt62, m50, m44, m57, m60, j6, j8, c11, c3];
           faceSizeB = Math.abs(Math.sqrt((faceLX - faceRX) ** 2 + (faceLY - faceRY) ** 2));
+        } else if (tracking_state === "selectKatsura") {
+          drawStamp();
         } else if (tracking_state === "autoShutter") {//変顔を測り続ける
           drawStamp();
           arrAfter = []; arrSum = [];//撮り直し用に配列クリア
@@ -283,42 +278,23 @@ class pageMain {
           }
         } else if (tracking_state == "usingButton") {
           drawStamp();
-          clearTimeout(timerID);
-          getCheekPos();
-          getHigePos();
-          photographing(); //撮影時のイベント
+          if (passedTime >= setCount) {
+            clearTimeout(timerID);
+            getCheekPos();
+            getHigePos();
+            photographing(); //撮影時のイベント
+          }
         }
-      }
-
-      let hengao = null,
-        timerID, //setTimeoutをclearTimeoutするときに必要なtimerID
-        setCount = 6, //カウント秒数
-        passedTime = 0;
-      //1秒ごとに実行される関数
-      const countTime = () => {
-        if (hengao == true) {//変形した顔の値の閾値
-          passedTime++;//経過秒数
-          let countDown = setCount - passedTime;//残り秒数
-          count_log.innerHTML = "撮影まで<br>" + countDown;//残り秒数表示
-        } else if (hengao == false) { //真顔に近くなったらカウントリセット
-          passedTime = 0;
-          count_log.innerHTML = "撮影まで<br>";
-        }
-        timerID = setTimeout(countTime, 1000);
       }
 
       let faceColor_r, faceColor_g, faceColor_b, r_avg, g_avg, b_avg, arrFace_r, arrFace_g, arrFace_b;
       const ctrackConverged = () => {
         console.log("トラッキング成功");
         remove_ctrackEvent();
-        btnB.style.display = "none";
-
         setTimeout(() => { //顔検出が成功し終わるまで時間を置いてから再開
           reTracking();
-        }, 1200);
+        }, 1500);
 
-        countTime();
-        tween_btns.play();//スタンプ用のボタン登場
         positions = ctrack.getCurrentPosition(); // 顔部品の現在位置の取得再開
         if (positions) { //顔部品の現在位置を取得したら
           getPos(positions);
@@ -347,28 +323,30 @@ class pageMain {
           g_avg = g_sum / arrFace_g.length;
           let b_sum = arrFace_b.reduce((sum, elem) => sum + elem, 0);
           b_avg = b_sum / arrFace_b.length;
-
-          //案内------------------------------------------------------------
-          tracking_state = "selectKatsura";
-          log.innerHTML = "【二】かつらを選んでね。";
-          progress_log.innerHTML = "全力で変顔をしてみよう。" + "<br>大きく顔を変化させられれば自動で撮影カウントが始まるよォ";
-          stamp_btn.forEach((value) => {
-            value.style.display = "inline-block";
-          });
-          setTimeout(() => {
-            if (tracking_state == "autoShutter") {
-              progress_log.innerHTML = "なかなか撮れてないみたいだね。大変！" + "<br>このボタンを押してみると良いよ。すぐ撮影できるゾ";
-              btnA.style.display = "inline-block";
-            }
-          }, 30000);
         }
+        //案内------------------------------------------------------------
+        btnB.style.display = "none";
+        stamp_btn.forEach((value) => {//出現
+          value.style.display = "inline-block";
+        });
+        tween_btns.play();//スタンプ用のボタン登場
+
+        log.innerHTML = "【二】かつらを選んでね。";
+        progress_log.innerHTML = "全力で変顔をしてみよう。<br>大きく顔を変化させられれば自動で撮影カウントが始まるよォ";
+
+        setTimeout(() => {
+          if (tracking_state == "autoShutter") {
+            progress_log.innerHTML = "なかなか撮れてないみたいだね。大変！<br>このボタンを押してみると良いよ。すぐ撮影できるゾ";
+            btnA.style.display = "inline-block";
+          }
+        }, 28000);
       }
       const ctrackFailed = () => {
         log.innerHTML = "トラッキング失敗、もう一度撮影してください";
         remove_ctrackEvent();
         setTimeout(() => { //顔検出が成功し終わるまで時間を置いてから再開
           reTracking();
-        }, 1200);
+        }, 1500);
       }
       const remove_ctrackEvent = () => {
         document.removeEventListener('clmtrackrConverged', ctrackConverged, false); //トラッキング成功
@@ -385,16 +363,51 @@ class pageMain {
         ctrack.reset();
         ctrack.start(video); //videoのトラッキング再スタート
       }
+      let hengao = null,
+        timerID, //setTimeoutをclearTimeoutするときに必要なtimerID
+        setCount = 6, //カウント秒数
+        passedTime = 0;
+      //1秒ごとに実行される関数
+      const countTime = () => {
+        if (hengao == true) {//変形した顔の値の閾値
+          passedTime++;//経過秒数
+          let countDown = setCount - passedTime;//残り秒数
+          count_log.innerHTML = "撮影まで<br>" + countDown;//残り秒数表示
+        } else if (hengao == false) { //真顔に近くなったらカウントリセット
+          passedTime = 0;
+          count_log.innerHTML = "撮影まで<br>";
+        }
+        timerID = setTimeout(countTime, 1000);
+      }
       btnB.addEventListener('click', () => { //検出ボタンBeforeを押したら
         tracking_state = "before";
         contextB.clearRect(0, 0, canvasB.width, canvasB.height); //canvasクリア
         contextB.drawImage(video, 0, 0, canvasB.width, canvasB.height); //canvasに動画を切り出して転写
         wire_contextB.clearRect(0, 0, wireframe_canvasB.width, wireframe_canvasB.height);
+        ctrack.stop(video);
         ctrack.reset(); //videoのトラッキングを止める
         ctrack.start(canvasB); //canvas内でフェイストラッキング開始
         setTracking();
       });
-
+      arrBtn_katsura.forEach((value) => {//どれかカツラボタンをクリックしたら
+        value.addEventListener("click", () => {
+          hengao = false;
+          if (tracking_state == "autoShutter") {
+            btnS.style.display = "none";
+          } else {
+            tracking_state = "selectKatsura";
+            btnS.style.display = "inline-block";
+          }
+        });
+      });
+      btnS.addEventListener("click", () => {
+        btnS.style.display = "none";
+        tracking_state = "autoShutter";
+        log.innerHTML = "【三】変顔を5秒以上しよう。";
+        count_log_ver.innerHTML = "自力で撮影バージョン";
+        count_log.innerHTML = "撮影まで<br>";
+        countTime();//撮影カウントダウン用
+      });
       const copying500 = () => {
         //videoを転写したやつから直に正方形にトリミングしようとするとできないっぽいので、非表示canvasに一旦転写
         data_context500.clearRect(0, 0, dataOnly_canvas500.width, dataOnly_canvas500.height);
@@ -429,7 +442,7 @@ class pageMain {
 
         tracking_state = "end";
         log.innerHTML = "【四】撮影完了！";
-        progress_log.innerHTML = "撮影完了！" + "<br>いい感じに編集をしてアイコンを作ろう";
+        progress_log.innerHTML = "撮影完了！<br>いい感じに編集をしてアイコンを作ろう";
 
         drawingCombo();//加工する場所に転写
 

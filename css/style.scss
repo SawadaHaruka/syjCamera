@@ -165,7 +165,7 @@ body {
 }
 #section_camera {
   .camera_area {
-    height: 100vh;
+    height: 80vh;
   }
   #count {
     @include posi_absolute();
@@ -268,11 +268,6 @@ body {
         width: 100%;
         margin: 0 auto;
       }
-      #btnB {
-        @include posi_relative();
-        z-index: 10;
-        display: none;
-      }
     }
     #yohaku0 {
       @include posi_relative();
@@ -285,10 +280,17 @@ body {
         height: 1.5vw;
       }
     }
-    #btnA {
+    @mixin btnBAS {
       @include posi_relative();
       z-index: 10;
       display: none;
+    }
+    #btnB,
+    #btnS {
+      @include btnBAS();
+    }
+    #btnA {
+      @include btnBAS();
       color: $color_kuro;
       background: $color_mizu;
       &:hover {
