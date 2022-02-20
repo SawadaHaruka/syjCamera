@@ -175,8 +175,9 @@ body {
     top: 20%;
     left: 3vw;
     z-index: 50;
+    text-shadow: 1px 1px 0 $color_bg;
     @include sp {
-      top: 19%;
+      top: 22%;
       left: 5vw;
     }
     @include pc {
@@ -187,6 +188,7 @@ body {
     #count_log_ver {
       @include posi_relative();
       color: $color_murasaki;
+      font-weight: bold;
     }
     h1 {
       @include posi_relative();

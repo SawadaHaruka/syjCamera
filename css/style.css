@@ -206,11 +206,12 @@ body {
   top: 20%;
   left: 3vw;
   z-index: 50;
+  text-shadow: 1px 1px 0 #fcf0ed;
   font-family: serif;
 }
 @media screen and (max-width: 480px) {
   #section_camera #count {
-    top: 19%;
+    top: 22%;
     left: 5vw;
   }
 }
@@ -225,6 +226,7 @@ body {
   margin: 0;
   padding: 0;
   color: #3b357a;
+  font-weight: bold;
 }
 #section_camera #count h1 {
   position: relative;
