@@ -166,6 +166,9 @@ body {
 #section_camera {
   .camera_area {
     height: 80vh;
+    @include sp {
+      height: 100%;
+    }
   }
   #count {
     @include posi_absolute();

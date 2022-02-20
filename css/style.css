@@ -193,6 +193,11 @@ body {
 #section_camera .camera_area {
   height: 80vh;
 }
+@media screen and (max-width: 480px) {
+  #section_camera .camera_area {
+    height: 100%;
+  }
+}
 #section_camera #count {
   position: absolute;
   margin: 0;
